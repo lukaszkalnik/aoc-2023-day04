@@ -1,5 +1,22 @@
 package org.example
 
+import java.io.File
+import kotlin.math.pow
+
 fun main() {
-    println("Hello World!")
+    val input = File("input.txt").readLines()
+    val scratchcards = input.map { it.split(":")[1] }
+    val sumOfPoints = scratchcards.map { scratchcard ->
+        val splitScratchcard = scratchcard.split("|")
+        val winningNumbers = splitScratchcard[0].parseNumbers()
+        val chosenNumbers = splitScratchcard[1].parseNumbers()
+
+        chosenNumbers.filter { winningNumbers.contains(it) }
+            .let { if (it.isEmpty()) 0 else 2.toDouble().pow(it.size - 1).toInt() }
+    }.sum()
+
+    println(sumOfPoints)
 }
+
+fun String.parseNumbers(): List<Int> =
+    """\d+""".toRegex().findAll(this).map { it.value.toInt() }.toList()
