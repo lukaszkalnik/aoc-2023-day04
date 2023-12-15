@@ -13,7 +13,7 @@ fun main() {
         val winningNumbers = splitScratchcard[0].parseNumbers()
         val chosenNumbers = splitScratchcard[1].parseNumbers()
 
-        val cardsWon = chosenNumbers.filter { winningNumbers.contains(it) }.size
+        val cardsWon = chosenNumbers.count { it in winningNumbers }
         for (i in index + 1..index + cardsWon) {
             numberOfCards[i] += numberOfCards[index]
         }
