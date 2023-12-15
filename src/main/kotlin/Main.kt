@@ -1,21 +1,25 @@
 package org.example
 
 import java.io.File
-import kotlin.math.pow
 
 fun main() {
     val input = File("input.txt").readLines()
     val scratchcards = input.map { it.split(":")[1] }
-    val sumOfPoints = scratchcards.sumOf { scratchcard ->
+
+    val numberOfCards = MutableList(scratchcards.size) { 1 }
+
+    scratchcards.mapIndexed { index, scratchcard ->
         val splitScratchcard = scratchcard.split("|")
         val winningNumbers = splitScratchcard[0].parseNumbers()
         val chosenNumbers = splitScratchcard[1].parseNumbers()
 
-        chosenNumbers.filter { winningNumbers.contains(it) }
-            .let { if (it.isEmpty()) 0 else 2.toDouble().pow(it.size - 1).toInt() }
+        val cardsWon = chosenNumbers.filter { winningNumbers.contains(it) }.size
+        for (i in index + 1..index + cardsWon) {
+            numberOfCards[i] += numberOfCards[index]
+        }
     }
 
-    println(sumOfPoints)
+    println(numberOfCards.sum())
 }
 
 fun String.parseNumbers(): List<Int> =
