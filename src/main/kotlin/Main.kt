@@ -11,8 +11,8 @@ fun main() {
         val winningNumbers = splitScratchcard[0].parseNumbers()
         val chosenNumbers = splitScratchcard[1].parseNumbers()
 
-        chosenNumbers.filter { winningNumbers.contains(it) }
-            .let { if (it.isEmpty()) 0 else 2.toDouble().pow(it.size - 1).toInt() }
+        chosenNumbers.count { it in winningNumbers }
+            .let { if (it == 0) 0 else 2.0.pow(it - 1).toInt() }
     }
 
     println(sumOfPoints)
